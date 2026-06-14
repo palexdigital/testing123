@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="paléX App Store — All your paléX Apps in one place.">
+  <title>Official paléX App Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100vh; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      background: #2e2a33;
+      color: #f5f5f7;
+      overflow-x: hidden;
+    }
+    #silk-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+    .page {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 72px 24px 56px;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) both; }
+    .header {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; margin-bottom: 56px;
+    }
+    .store-title {
+      font-size: clamp(26px, 5vw, 36px);
+      font-weight: 700; letter-spacing: -0.6px;
+      color: #f5f5f7; margin-bottom: 8px; line-height: 1.1;
+    }
+    .store-title span { color: #a855f7; }
+    .tagline { font-size: 15px; color: rgba(245,245,247,0.5); letter-spacing: 0.1px; }
+    .section-label {
+      width: 100%; max-width: 720px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(245,245,247,0.3);
+      margin-bottom: 16px; padding: 0 2px;
+    }
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 16px; width: 100%; max-width: 720px;
+    }
+    .app-card {
+      display: flex; flex-direction: column; align-items: flex-start;
+      text-decoration: none;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      padding: 16px 14px 14px;
+      transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), background 0.18s ease;
+    }
+    .app-card:hover { transform: scale(1.035) translateY(-2px); background: rgba(255,255,255,0.12); }
+    .app-card:active { transform: scale(0.97); }
+    .app-icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      overflow: hidden; margin-bottom: 12px; flex-shrink: 0;
+      background: rgba(168,85,247,0.15);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .app-icon::after {
+      content: ''; position: absolute; inset: 0; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .app-icon img {
+      width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 18px;
+    }
+    .app-icon .icon-placeholder {
+      width: 100%; height: 100%; border-radius: 18px;
+      background: linear-gradient(135deg, #4c1d95, #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .app-icon .icon-placeholder svg {
+      width: 28px; height: 28px; opacity: 0.7;
+    }
+    .app-name {
+      font-size: 13px; font-weight: 600; color: #f5f5f7;
+      line-height: 1.3; margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;
+    }
+    .app-desc {
+      font-size: 11px; color: rgba(245,245,247,0.45);
+      line-height: 1.45; margin-bottom: 14px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+      flex-grow: 1;
+    }
+    .get-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(168,85,247,0.18); color: #c084fc;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      border: none; border-radius: 50px; padding: 5px 18px;
+      cursor: pointer; font-family: inherit; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .get-btn:hover { background: rgba(168,85,247,0.30); }
+    .footer {
+      margin-top: 64px; font-size: 12px;
+      color: rgba(245,245,247,0.25); text-align: center;
+    }
+    @media (max-width: 420px) {
+      .app-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+    @media (min-width: 640px) { .app-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 860px) { .app-grid { grid-template-columns: repeat(4, 1fr); } }
+  </style>
+</head>
+<body>
+
+<canvas id="silk-canvas"></canvas>
+
+<main class="page fade-in">
+
+  <header class="header">
+    <h1 class="store-title">Official paléX <span>App Store</span></h1>
+    <p class="tagline">Where Great Apps Find Their Audience.</p>
+  </header>
+
+  <p class="section-label">Featured Apps</p>
+  <nav class="app-grid" id="appGrid" aria-label="Apps"></nav>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> paléX. All rights reserved.</p>
+  </footer>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+<script>
+
+/* ================================================================
+   EDIT YOUR APPS HERE — works directly in GitHub's web editor.
+
+   For each app, fill in:
+     name  : the app name shown on the card
+     desc  : one short line describing the app
+     image : a direct URL to the app icon image (paste any image link)
+     link  : the URL the card opens when tapped
+
+   To add more apps, copy one block and paste it below, separated by a comma.
+   To remove an app, delete its { ... } block (and the comma before it).
+================================================================ */
+const APPS = [
+  {
+    name:  "App Name 1",
+    desc:  "Short description of this app",
+    image: "https://via.placeholder.com/128/4c1d95/ffffff?text=1",
+    link:  "https://000000000000000/"
+  },
+  {
+    name:  "App Name 2",
+    desc:  "Short description of this app",
+    image: "https://via.placeholder.com/128/4c1d95/ffffff?text=2",
+    link:  "https://000000000000000/"
+  },
+  {
+    name:  "App Name 3",
+    desc:  "Short description of this app",
+    image: "https://via.placeholder.com/128/4c1d95/ffffff?text=3",
+    link:  "https://000000000000000/"
+  },
+  {
+    name:  "App Name 4",
+    desc:  "Short description of this app",
+    image: "https://via.placeholder.com/128/4c1d95/ffffff?text=4",
+    link:  "https://000000000000000/"
+  },
+  {
+    name:  "App Name 5",
+    desc:  "Short description of this app",
+    image: "https://via.placeholder.com/128/4c1d95/ffffff?text=5",
+    link:  "https://000000000000000/"
+  },
+  {
+    name:  "App Name 6",
+    desc:  "Short description of this app",
+    image: "https://via.placeholder.com/128/4c1d95/ffffff?text=6",
+    link:  "https://000000000000000/"
+  }
+];
+/* ================================================================ */
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+(function buildGrid() {
+  const grid = document.getElementById('appGrid');
+  APPS.forEach(app => {
+    const a = document.createElement('a');
+    a.className = 'app-card';
+    a.href = app.link || '#';
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+
+    const iconHTML = app.image
+      ? `<img src="${app.image}" alt="${app.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'icon-placeholder\\'><svg viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'#fff\\' stroke-width=\\'2\\'><line x1=\\'5\\' y1=\\'5\\' x2=\\'19\\' y2=\\'19\\'/><line x1=\\'19\\' y1=\\'5\\' x2=\\'5\\' y2=\\'19\\'/></svg></div>'">`
+      : `<div class="icon-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div>`;
+
+    a.innerHTML = `
+      <div class="app-icon">${iconHTML}</div>
+      <p class="app-name">${app.name}</p>
+      <p class="app-desc">${app.desc}</p>
+      <span class="get-btn">GET</span>
+    `;
+    grid.appendChild(a);
+  });
+})();
+
+/* Silk background */
+(function() {
+  const canvas = document.getElementById('silk-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function wait(cb) {
+    typeof SimplexNoise !== 'undefined' ? cb() : setTimeout(() => wait(cb), 40);
+  }
+  wait(() => {
+    const s = new SimplexNoise();
+    function draw() {
+      ctx.fillStyle = '#2e2a33';
+      ctx.fillRect(0, 0, W, H);
+      for (let i = 0; i < 90; i++) {
+        const y0 = (i / 90) * H;
+        ctx.beginPath(); ctx.moveTo(0, y0);
+        for (let j = 1; j <= 70; j++) {
+          const x = (j / 70) * W;
+          ctx.lineTo(
+            x + s.noise3D(x * 0.003, y0 * 0.003, t * 0.008) * 60,
+            y0 + s.noise3D(x * 0.003 + 100, y0 * 0.003, t * 0.008) * 18
+          );
+        }
+        const hue = 270 + s.noise3D(i * 0.12, 0, t * 0.005) * 30;
+        const alpha = 0.04 + Math.abs(s.noise3D(i * 0.15, 1, t * 0.004)) * 0.08;
+        ctx.strokeStyle = `hsla(${hue},50%,65%,${alpha})`;
+        ctx.lineWidth = 1.5; ctx.stroke();
+      }
+      t++; requestAnimationFrame(draw);
+    }
+    draw();
+  });
+})();
+
+</script>
+</body>
+</html>
