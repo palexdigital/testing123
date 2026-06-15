@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Next Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════ -->
+  <header class="navbar">
+    <a href="index.html" class="nav-logo">Your Next Store</a>
+
+    <nav class="nav-links">
+      <a href="category.html?cat=accessories">Accessories</a>
+      <a href="category.html?cat=apparel">Apparel</a>
+      <a href="category.html?cat=shoes">Shoes</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search for products..." />
+        <button class="search-btn" onclick="handleSearch()" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <button class="icon-btn" aria-label="Account">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <button class="icon-btn cart-btn" aria-label="Cart" onclick="toggleCart()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       HERO BANNER
+  ═══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Launch your store in minutes.</h1>
+      <p>Stripe-native. Built for the agentic future.</p>
+      <a href="#products" class="btn-dark">Try it today</a>
+    </div>
+    <div class="hero-images">
+      <!-- Replace these src paths with real images in the /images/ folder -->
+      <img src="images/hero-shoe.png" alt="White sneaker" class="hero-shoe" />
+      <img src="images/hero-bag.png" alt="Beige handbag" class="hero-bag" />
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       PRODUCT GRID
+  ═══════════════════════════════════════════ -->
+  <section class="products-section" id="products">
+    <div class="sort-wrap">
+      <select id="sortSelect" onchange="renderProducts()">
+        <option value="default">Sort products</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name-asc">Name: A–Z</option>
+      </select>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       EDITORIAL BANNERS
+  ═══════════════════════════════════════════ -->
+  <section class="editorial-grid">
+    <div class="editorial-card">
+      <img src="images/editorial-relax.jpg" alt="Relax collection" />
+      <div class="editorial-copy">
+        <strong>Relax</strong>
+        <span>The most comfortable items on the market.</span>
+      </div>
+    </div>
+    <div class="editorial-card">
+      <img src="images/editorial-lifestyle.jpg" alt="Lifestyle collection" />
+      <div class="editorial-copy">
+        <strong>Lifestyle</strong>
+        <span>The most stylish accessories out there.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-social">
+      <!-- Social icons — swap hrefs as needed -->
+      <a href="#" aria-label="Instagram" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="#" aria-label="Facebook" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="#" aria-label="X / Twitter" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" aria-label="YouTube" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="#" aria-label="LinkedIn" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a href="#" aria-label="TikTok" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.79 1.53V6.77a4.85 4.85 0 0 1-1.02-.08z"/></svg>
+      </a>
+      <a href="#" aria-label="Email" class="social-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+    </div>
+
+    <nav class="footer-nav">
+      <strong>Shop</strong>
+      <a href="category.html?cat=apparel">Apparel</a>
+      <a href="category.html?cat=accessories">Accessories</a>
+      <a href="category.html?cat=shoes">Shoes</a>
+    </nav>
+
+    <div class="footer-newsletter">
+      <input type="email" id="emailInput" placeholder="Enter your email" />
+      <button class="btn-dark" onclick="handleSubscribe()">Subscribe</button>
+    </div>
+
+    <div class="footer-payments">
+      <p class="payments-label">Accepted Payment Methods</p>
+      <div class="payment-icons">
+        <span class="pay-icon">VISA</span>
+        <span class="pay-icon">GPay</span>
+        <span class="pay-icon">MC</span>
+        <span class="pay-icon">iDEAL</span>
+        <span class="pay-icon">Blik</span>
+        <span class="pay-icon">Klarna</span>
+        <span class="pay-icon">AMEX</span>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 YNS Demo. All rights reserved.</p>
+      <span class="made-with">✦ Made with YNS</span>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       CART DRAWER
+  ═══════════════════════════════════════════ -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button onclick="toggleCart()" class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <button class="btn-dark full-width" onclick="checkout()">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       TOAST NOTIFICATION
+  ═══════════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
